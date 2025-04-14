@@ -1,10 +1,9 @@
 import { useGlobalData } from "./hooks/useGlobalData";
-
 import Header from "./components/header/header";
 
 const App = () => {
 
-  const { URL } = useGlobalData();
+  const { FETCH_WEATHER_URL } = useGlobalData();
 
   return (
     <>
