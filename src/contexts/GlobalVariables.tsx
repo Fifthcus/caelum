@@ -13,7 +13,7 @@ export const GlobalVariables = createContext<GlobalVariablesContextObject | unde
 export const GlobalVariablesProvider = (props: GlobalVariablesContextProps) => {
     const LAT = 1;
     const LON = 1;
-    const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&appid=${ import.meta.env.VITE_API_KEY }`
+    const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&appid=${ import.meta.env.VITE_API_KEY }`;
     return(
         <GlobalVariables.Provider value={{ URL }}>
             { props.children }
