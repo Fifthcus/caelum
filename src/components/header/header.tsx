@@ -4,20 +4,22 @@ import SearchIcon from "../icons/Search";
 
 const Header = () => {
 
-    const { GeocodeLocationName } = useGlobalData();
+    const { GeocodeLocationName, FetchWeatherData } = useGlobalData();
 
     const [ inputText, setInputText ] = useState("");
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const response = await GeocodeLocationName(inputText);
-        console.log(response);
+        const { lat, lon } = response[0];
+        await FetchWeatherData(lat, lon);
+        //const weather = await FetchWeatherData(lat, lon);
         setInputText("");
     }
     return(
         <header className="flex flex-col items-center gap-5 px-6 py-8">
             <div className="grow content-center">
-                <h1 className="text-2xl">Caelum</h1>
+                <h1 className="text-neutral-900 text-2xl">Caelum</h1>
             </div>
             <div className="grow content-center">
                 <form onSubmit={handleSubmit} className="flex gap-0.5">

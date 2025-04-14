@@ -1,9 +1,17 @@
 import { createContext, JSX } from "react";
 
 interface GlobalVariablesContextObject {
-    FETCH_WEATHER_URL: string,
-    FETCH_GEOLOCATION_URL: string,
-    GeocodeLocationName: (name: string) => {}
+    GeocodeLocationName: (name: string) => Promise<GeocodeLocationObject[]>,
+    FetchWeatherData: (lat: number, lon: number) => void;
+}
+
+interface GeocodeLocationObject {
+    country: string,
+    lat: number,
+    local_names: { [key: string]: string },
+    lon: number,
+    name: string,
+    state: string
 }
 
 interface GlobalVariablesContextProps {
@@ -13,20 +21,24 @@ interface GlobalVariablesContextProps {
 export const GlobalVariables = createContext<GlobalVariablesContextObject | undefined>(undefined);
 
 export const GlobalVariablesProvider = (props: GlobalVariablesContextProps) => {
-    const LAT = 1;
-    const LON = 1;
-    const CITY_NAME = "New York";
-    const FETCH_GEOLOCATION_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${CITY_NAME}&limit=1&appid=${ import.meta.env.VITE_API_KEY }`;
-    const FETCH_WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&appid=${ import.meta.env.VITE_API_KEY }`;
 
-    const GeocodeLocationName = async (name: string) => {
-        const url = `http://api.openweathermap.org/geo/1.0/direct?q=${CITY_NAME}&limit=1&appid=${ import.meta.env.VITE_API_KEY }`
+    const GeocodeLocationName = async (name: string): Promise<GeocodeLocationObject[]> => {
+        const url = `http://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${ import.meta.env.VITE_API_KEY }`
         const response = await fetch(url);
-        const json = await response.json();
+        const json: GeocodeLocationObject[] = await response.json();
         return json;
     }
+
+    const FetchWeatherData = async (lat: number, lon: number) => {
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${ import.meta.env.VITE_API_KEY }`;
+        const response = await fetch(url);
+        const json = await response.json();
+        console.log(json);
+        return json;
+    }
+
     return(
-        <GlobalVariables.Provider value={{ FETCH_WEATHER_URL, FETCH_GEOLOCATION_URL, GeocodeLocationName }}>
+        <GlobalVariables.Provider value={ { GeocodeLocationName, FetchWeatherData } }>
             { props.children }
         </GlobalVariables.Provider>
     );
