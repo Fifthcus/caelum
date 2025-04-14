@@ -1,4 +1,8 @@
-function App() {
+import { useGlobalData } from "./hooks/useGlobalData";
+
+const App = () => {
+
+  const { URL } = useGlobalData();
 
   return (
     <>
