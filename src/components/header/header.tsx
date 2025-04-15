@@ -4,16 +4,17 @@ import SearchIcon from "../icons/Search";
 
 const Header = () => {
 
-    const { GeocodeLocationName, FetchWeatherData } = useGlobalData();
+    const {setWeather, GeocodeLocationName, FetchWeatherData } = useGlobalData();
 
     const [ inputText, setInputText ] = useState("");
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const response = await GeocodeLocationName(inputText);
-        const { lat, lon } = response[0];
-        await FetchWeatherData(lat, lon);
-        //const weather = await FetchWeatherData(lat, lon);
+        console.log(response);
+        const { lat, lon, name, state } = response[0];
+        const weather = await FetchWeatherData({ lat, lon, name, state });
+        setWeather(weather);
         setInputText("");
     }
     return(
