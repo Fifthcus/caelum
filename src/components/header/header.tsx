@@ -20,7 +20,7 @@ const Header = () => {
     return(
         <header className="flex flex-col items-center gap-5 px-6 py-8">
             <div className="grow content-center">
-                <h1 className="text-neutral-900 text-2xl">Caelum</h1>
+                <h1 className="text-2xl font-medium">Caelum</h1>
             </div>
             <div className="grow content-center">
                 <form onSubmit={handleSubmit} className="flex gap-0.5">

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    font-family:'Times New Roman', Times, serif
+html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fafafa;
 }
