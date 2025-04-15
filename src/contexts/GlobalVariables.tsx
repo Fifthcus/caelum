@@ -1,7 +1,8 @@
 import { useState, createContext, JSX } from "react";
 
 interface GlobalVariablesContextObject {
-    locale: LocaleObject | undefined
+    loading: boolean,
+    locale: LocaleObject | undefined,
     weather: any,
     setWeather: any,
     GeocodeLocationName: (name: string) => Promise<GeocodeLocationObject[]>,
@@ -37,10 +38,12 @@ export const GlobalVariables = createContext<GlobalVariablesContextObject | unde
 
 export const GlobalVariablesProvider = (props: GlobalVariablesContextProps) => {
 
+    const [ loading, setLoading ] = useState(false);
     const [ weather, setWeather ] = useState<any | undefined>(undefined);
     const [ locale, setLocale ] = useState<LocaleObject | undefined>(undefined);
 
     const GeocodeLocationName = async (name: string): Promise<GeocodeLocationObject[]> => {
+        setLoading(true);
         const url = `http://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${ import.meta.env.VITE_API_KEY }`
         const response = await fetch(url);
         const json: GeocodeLocationObject[] = await response.json();
@@ -51,13 +54,13 @@ export const GlobalVariablesProvider = (props: GlobalVariablesContextProps) => {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${ import.meta.env.VITE_API_KEY }`;
         const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
         setLocale({ city: name, state });
+        setLoading(false);
         return json;
     }
 
     return(
-        <GlobalVariables.Provider value={ { locale, weather, setWeather, GeocodeLocationName, FetchWeatherData } }>
+        <GlobalVariables.Provider value={ { loading, locale, weather, setWeather, GeocodeLocationName, FetchWeatherData } }>
             { props.children }
         </GlobalVariables.Provider>
     );

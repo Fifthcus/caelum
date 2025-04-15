@@ -1,5 +1,6 @@
 import Header from "./components/header/header";
-import Weather from "./components/weather/Weather";
+import Weather from "./components/weather/weather";
+import Loading from "./components/loading/Loading";
 
 const App = () => {
 
@@ -9,6 +10,7 @@ const App = () => {
       <Weather />
     </>
   )
+
 }
 
 export default App;
